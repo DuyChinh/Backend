@@ -1,0 +1,59 @@
+
+<h1>Home</h1>
+<div class="mb-3">
+    <a href="/add" class="btn btn-success">Add</a>
+</div>
+<form action="" class="mb-3">
+    <div class="row">
+        <div class="col-3">
+            <select class="form-select" name="status">
+                <option value="all">Tất cả</option>
+                <option value="active">Kích hoạt</option>
+                <option value="inactive">Chưa kích hoạt</option>
+            </select>
+        </div>
+        <div class="col-7">
+            <input type="search" class="form-control" name="keyword" placeholder="Từ khóa tìm kiếm...">
+        </div>
+        <div class="col-2 d-grid">
+        <button class="btn btn-success">Tìm kiếm</button>
+    </div>
+    </div>
+</form>
+<%-msg.length ? `<div class="alert alert-success mt-2">${msg}</div>`:""%>
+<table class="table table-bordered" cellspacing="0" >
+  <tr>
+    <th style="padding: 8px;">Id</th>
+    <th style="padding: 8px;">Course</th>
+    <th style="padding: 8px;">Price</th>
+    <th style="padding: 8px;">Created_at</th>
+    <th style="padding: 8px;">Updated_at</th>
+    <th style="padding: 8px;">Status</th>
+    <th>
+        <a href="#" class="btn btn-warning">Fix</a>
+    </th>
+    <th>
+        <a href="#" class="btn btn-danger">Delete</a>
+    </th>
+  </tr>
+
+  <% courses.forEach(({id, name, price, created_at, updated_at, status}) => { %>
+   <tr>
+    <td style="padding: 8px;"><%= id %></td>
+    <td style="padding: 8px;"><%= name %></td>
+    <td style="padding: 8px;"><%=status ? 'Kích hoạt' : 'Chưa kích hoạt' %></td>
+    <td style="padding: 8px;"><%= price.toLocaleString() %></td>
+    <td style="padding: 8px;"><%= moment(created_at).format('DD/MM/YYYY HH:mm:ss') %></td>
+    <td style="padding: 8px;"><%= moment(updated_at).format('DD/MM/YYYY HH:mm:ss') %></td>
+    <td>
+        <a href="#" class="btn btn-warning">Fix</a>
+    </td>
+    <td>
+        <a href="/delete/<%= id %>" class="btn btn-danger">Delete</a>
+    </td>
+  </tr>
+  <% }) %>
+ 
+</table>
+<!-- <h2>Duy Chinh</h2> -->
+

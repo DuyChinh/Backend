@@ -1,0 +1,24 @@
+<h1>Add courses</h1>
+<form action="" method="post">
+    <div class="mb-3">
+        <label for="">Name</label>
+        <input type="text" name="name" class="form-control" placeholder="Name..." value="<%=req.old.name  %>">
+        <p class="text-danger mt-2"><%= req.errors.name?req.errors.name:""%></p>
+    </div>
+    <div class="mb-3">
+      <label for="">Price</label>
+      <input type="text" name="price" class="form-control" placeholder="Price..." value="<%=req.old.price%>">
+      <p class="text-danger mt-2"><%= req.errors.price?req.errors.price:""%></p>
+    </div>
+
+    <div class="mb-3">
+      <label for="">Status</label>
+      <select name="status" class="form-control">
+        <option value="inactive" <%=req.old.status === 'inactive' ? 'selected' : '' %>>Chưa kích hoạt</option>
+        <option value="active" <%=req.old.status === 'active' ? 'selected' : '' %>>Kích hoạt</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="/" class="btn btn-danger">Hủy</a>
+
+</form>
