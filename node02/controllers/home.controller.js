@@ -5,24 +5,16 @@ const { object, string, number } = require("yup");
 const courseModel = require("../models/course.model");
 module.exports = {
   index: async (req, res) => {
-    // console.log(db);
+
     //Đọc dữ liệu từ request
     const { keyword, status } = req.query;
-    // console.log(keyword);
-    //Read data table courses
-
     const courses = await courseModel.all(keyword, status);
     // console.log(courses);
     const msg = req.flash("msg");
     const msgDelete = req.flash("msg-delete");
     // console.log(msg);
     res.render("home/index", { courses, moment, msg, msgDelete });
-    // console.log(courses);
-    // } catch(e) {
-    //     // throw new Error(message);
-    // }
-
-    // console.log(process.env.APP_NAME);
+    
   },
   add: (req, res) => {
     // console.log(req.errors);
@@ -100,15 +92,13 @@ module.exports = {
 
   edit: async(req, res) => {
     
-    // const id = +req.params.id;
-    // const courses = await courseModel.findId(id);
+    const id = +req.params.id;
+    req.session.courseId = id;
+    // console.log(id);
+    const courses = await courseModel.findId(id);
     // // console.log(courses[0]);
-    // const course = courses[0];
-    // // console.log(course);
-    // //  const error = req.flash("errors");
-    // // console.log("error", req);
-    // // res.render("home/edit");
-    res.render("home/edit", { req });
+    const course = courses[0];
+    res.render("home/edit", { course, req });
     
   },
 
@@ -127,8 +117,13 @@ module.exports = {
       })
     })
     if(body) {
-       await courseModel.update(body, id);
-       return res.redirect("/");
+      // console.log(req.session.courseId + " " + id);
+      if(+id !== +req.session.courseId) {
+        return res.status(404).send("Course not found");;
+      } 
+      await courseModel.update(body, id);
+
+      return res.redirect("/");
     }
     
   // console.log(body);
