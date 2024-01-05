@@ -119,7 +119,7 @@ module.exports = {
     if(body) {
       // console.log(req.session.courseId + " " + id);
       if(+id !== +req.session.courseId) {
-        return res.status(404).send("Course not found");;
+        return res.status(404).send("Course not found");
       } 
       await courseModel.update(body, id);
 
