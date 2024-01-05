@@ -14,8 +14,9 @@ module.exports = {
     const courses = await courseModel.all(keyword, status);
     // console.log(courses);
     const msg = req.flash("msg");
+    const msgDelete = req.flash("msg-delete");
     // console.log(msg);
-    res.render("home/index", { courses, moment, msg });
+    res.render("home/index", { courses, moment, msg, msgDelete });
     // console.log(courses);
     // } catch(e) {
     //     // throw new Error(message);
@@ -78,42 +79,36 @@ module.exports = {
         Redirect kèm thông báo
         */
   },
-
-  deleteData: (req, res) => {
-    // await courseModel.delete(req.params.id);
-    // res.render("home/delete");
-    // return res.redirect("home/delete");
-    // console.log(req.params.id);
-    res.render("home/delete");
-    // res.redirect("/");
-  },
-
   handleDelete: async (req, res) => {
-    // res.render("home/delete");
-    // const body = await req.body;
-    // console.log(req.params.id);
-    // console.log(req.params);
-    // console.log(req.params.id);
-    courseModel.delete(req.params.id);
+    const id = req.params.id;
+    try {
+      const courseId = await courseModel.findId(id);
+      // console.log(courseId);
+    
+      if(!courseId) {
+        return res.status(404).send("Course not found");
+      }
 
-    // const courses = await courseModel.delete(req.params.id);
-    // console.log("course fu"+ courses);
-    // const msg = req.flash("msg");
-    // res.render("home/index", { courses, msg, moment });
-    // return res.redirect("/");
+      await courseModel.delete(id);
+
+      req.flash("msg-delete", "Delete course successfully");
+      return res.redirect("/");
+    } catch (error) {
+      return res.status(500).send("Delete course failed. Let's try again!");
+    }
   },
 
   edit: async(req, res) => {
     
-    const id = +req.params.id;
-    const courses = await courseModel.findId(id);
-    // console.log(courses[0]);
-    const course = courses[0];
-    // console.log(course);
-    //  const error = req.flash("errors");
-    // console.log("error", req);
-    // res.render("home/edit");
-    res.render("home/edit", { course, req });
+    // const id = +req.params.id;
+    // const courses = await courseModel.findId(id);
+    // // console.log(courses[0]);
+    // const course = courses[0];
+    // // console.log(course);
+    // //  const error = req.flash("errors");
+    // // console.log("error", req);
+    // // res.render("home/edit");
+    res.render("home/edit", { req });
     
   },
 

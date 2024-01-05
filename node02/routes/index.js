@@ -11,10 +11,10 @@ router.get("/", homeController.index);
 router.get("/add", homeController.add);
 router.post("/add", homeController.handleAdd);
 // router.get("/delete/:id", homeController.handleDelete);
-router.get("/edit/:id", homeController.edit);
+router.get("/edit", homeController.edit);
 router.post("/edit/:id", homeController.handleUpdate);
 
-router.get("/delete", homeController.deleteData);
+// router.get("/delete", homeController.deleteData);
 router.post("/delete/:id", homeController.handleDelete);
 
 

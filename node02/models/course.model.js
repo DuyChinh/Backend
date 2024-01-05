@@ -39,8 +39,8 @@ module.exports = {
         WHERE id=${id}`;
     },
     delete: (id) => {
-        console.log(id);
-        // return sql`DELETE FROM courses WHERE courses.id=${id}`;
+        // console.log(id);
+        return sql`DELETE FROM courses WHERE courses.id=${id}`;
         // return sql`SELECT * FROM courses WHERE id=${id}`;
     },
     findId: (id) => {

@@ -3,7 +3,8 @@
 <div class="mb-3">
     <a href="/add" class="btn btn-success">Add</a>
 </div>
-<form action="/delete/<%= courses.id %>" class="mb-3" method="post">
+<form action="" class="mb-3">
+    <input hidden type="text" name="id" value="<%= courses.id %>">
     <div class="row">
         <div class="col-3">
             <select class="form-select" name="status">
@@ -21,6 +22,7 @@
     </div>
 </form>
 <%-msg.length ? `<div class="alert alert-success mt-2">${msg}</div>`:""%>
+<%-msgDelete.length? `<div class="alert alert-success mt-2">${msgDelete}</div>`:"" %>
 <table class="table table-bordered" cellspacing="0" >
   <tr>
     <th style="padding: 8px;">Id</th>
@@ -46,14 +48,21 @@
     <td style="padding: 8px;"><%= moment(created_at).format('DD/MM/YYYY HH:mm:ss') %></td>
     <td style="padding: 8px;"><%= moment(updated_at).format('DD/MM/YYYY HH:mm:ss') %></td>
     <td>
-        <a href="/edit/<%=id %>" class="btn btn-warning">Fix</a>
+        <form action="/edit/<%=id %>" method="post">
+            <button class="btn btn-warning">Fix</button>
+        </form>
     </td>
     <td>
-        <a href="/delete" type="submit" class="btn btn-danger">Delete</a>
+        <form action="/delete/<%= id %>" method="post" onsubmit="return confirm('Do you confirm that you want to delete it?')">
+            <button class="btn btn-danger">Delete</button>
+        </form>
     </td>
   </tr>
   <% }) %>
  
 </table>
+<!-- <script>
+    document.querySelectorAll(".btn-dele").
+</script> -->
 <!-- <h2>Duy Chinh</h2> -->
 
