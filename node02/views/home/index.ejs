@@ -3,7 +3,7 @@
 <div class="mb-3">
     <a href="/add" class="btn btn-success">Add</a>
 </div>
-<form action="" class="mb-3">
+<form action="/delete/<%= courses.id %>" class="mb-3" method="post">
     <div class="row">
         <div class="col-3">
             <select class="form-select" name="status">
@@ -46,10 +46,10 @@
     <td style="padding: 8px;"><%= moment(created_at).format('DD/MM/YYYY HH:mm:ss') %></td>
     <td style="padding: 8px;"><%= moment(updated_at).format('DD/MM/YYYY HH:mm:ss') %></td>
     <td>
-        <a href="#" class="btn btn-warning">Fix</a>
+        <a href="/edit/<%=id %>" class="btn btn-warning">Fix</a>
     </td>
     <td>
-        <a href="/delete/<%= id %>" class="btn btn-danger">Delete</a>
+        <a href="/delete" type="submit" class="btn btn-danger">Delete</a>
     </td>
   </tr>
   <% }) %>

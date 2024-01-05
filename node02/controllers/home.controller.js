@@ -27,6 +27,7 @@ module.exports = {
     // console.log(req.errors);
 
     // console.log(req);
+    // console.log(req.errors);
     res.render("home/add", { req });
   },
 
@@ -78,17 +79,64 @@ module.exports = {
         */
   },
 
-  handleDelete: (req, res) => {
+  deleteData: (req, res) => {
+    // await courseModel.delete(req.params.id);
+    // res.render("home/delete");
+    // return res.redirect("home/delete");
+    // console.log(req.params.id);
+    res.render("home/delete");
+    // res.redirect("/");
+  },
+
+  handleDelete: async (req, res) => {
     // res.render("home/delete");
     // const body = await req.body;
     // console.log(req.params.id);
-
+    // console.log(req.params);
+    // console.log(req.params.id);
     courseModel.delete(req.params.id);
 
     // const courses = await courseModel.delete(req.params.id);
     // console.log("course fu"+ courses);
     // const msg = req.flash("msg");
     // res.render("home/index", { courses, msg, moment });
-    return res.redirect("/");
+    // return res.redirect("/");
+  },
+
+  edit: async(req, res) => {
+    
+    const id = +req.params.id;
+    const courses = await courseModel.findId(id);
+    // console.log(courses[0]);
+    const course = courses[0];
+    // console.log(course);
+    //  const error = req.flash("errors");
+    // console.log("error", req);
+    // res.render("home/edit");
+    res.render("home/edit", { course, req });
+    
+  },
+
+  handleUpdate: async (req, res) => {
+    // console.log(req.body);
+    // console.log(req.body.id);
+    const id = req.body.id;
+    const body = await req.validate(req.body, {
+      name: string().required('Tên khóa học phải nhập!'),
+      price: string().required('Giá bắt buộc phải nhập!').test('check-number', 'Giá khóa học phải là số', (value) => {
+        value = +value;
+        if(!isNaN(value)) {
+          return true; 
+        }
+        return false;
+      })
+    })
+    if(body) {
+       await courseModel.update(body, id);
+       return res.redirect("/");
+    }
+    
+  // console.log(body);
+    // console.log(req.body);
   }
 };

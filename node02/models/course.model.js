@@ -32,12 +32,21 @@ module.exports = {
         const status = data.status;
         return sql`INSERT INTO courses(name, price, status) VALUES(${name}, ${price}, ${status === 'active' ? true : false})`;
     },
-    update: (data, id) => {},
+    update: (data, id) => {
+        console.log(data);
+        return sql`UPDATE courses 
+        SET name=${data.name}, price=${data.price}, status=${data.status === 'active' ? true : false}
+        WHERE id=${id}`;
+    },
     delete: (id) => {
         console.log(id);
-        return sql`DELETE FROM courses WHERE courses.id=${id}`;
+        // return sql`DELETE FROM courses WHERE courses.id=${id}`;
         // return sql`SELECT * FROM courses WHERE id=${id}`;
     },
+    findId: (id) => {
+        // console.log(id);
+        return sql`SELECT * FROM courses WHERE id=${id}`;
+    }
     // search: (status) => {
     //     const filter = status ? 
     // }
