@@ -12,8 +12,9 @@ module.exports = {
     // console.log(courses);
     const msg = req.flash("msg");
     const msgDelete = req.flash("msg-delete");
+    const msgUpdate = req.flash("msg-update");
     // console.log(msg);
-    res.render("home/index", { courses, moment, msg, msgDelete });
+    res.render("home/index", { courses, moment, msg, msgDelete, msgUpdate });
     
   },
   add: (req, res) => {
@@ -90,24 +91,36 @@ module.exports = {
     }
   },
 
-  edit: async(req, res) => {
+  edit: async(req, res, next) => {
     
     const id = +req.params.id;
+
     req.session.courseId = id;
     // console.log(id);
-    const courses = await courseModel.findId(id);
+    let courses;
+    try {
+      courses = await courseModel.findId(id);
+        if(!courses.length) {
+          throw new Error('Khóa học không tồn tại');
+        }
+    } catch(e) {
+      return next(e);
+    }
+   
     // // console.log(courses[0]);
     const course = courses[0];
+    req.old = course;
+    
     res.render("home/edit", { course, req });
     
   },
 
   handleUpdate: async (req, res) => {
-    // console.log(req.body);
-    // console.log(req.body.id);
     const id = req.body.id;
     const body = await req.validate(req.body, {
-      name: string().required('Tên khóa học phải nhập!'),
+      name: string().required('Tên khóa học phải nhập!').test('check-unique', 'Tên khóa học đã tồn tại', async(value) => {
+            return await courseModel.courseUnique(value, id);
+        }),
       price: string().required('Giá bắt buộc phải nhập!').test('check-number', 'Giá khóa học phải là số', (value) => {
         value = +value;
         if(!isNaN(value)) {
@@ -118,10 +131,13 @@ module.exports = {
     })
     if(body) {
       // console.log(req.session.courseId + " " + id);
+      // console.log("session id");
+      // console.log(req.session.courseId);
       if(+id !== +req.session.courseId) {
         return res.status(404).send("Course not found");
       } 
       await courseModel.update(body, id);
+      req.flash("msg-update", "Update succesfully!");
 
       return res.redirect("/");
     }

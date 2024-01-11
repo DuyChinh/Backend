@@ -17,8 +17,9 @@ module.exports = {
         }
         return sql`SELECT * FROM courses ${filter} ORDER BY id DESC`;
     },
-    courseUnique: async(name) => {
-        const result = await sql`SELECT id FROM courses WHERE LOWER(name)=${name.trim().toLowerCase()}`;
+    courseUnique: async(name, id = 0) => {
+        const ignore = id > 0 ? sql`AND id!=${id}` : sql``;
+        const result = await sql`SELECT id FROM courses WHERE LOWER(name)=${name.trim().toLowerCase()} ${ignore}`;
         if(result.length) {
             return false;
         }
@@ -35,7 +36,7 @@ module.exports = {
     update: (data, id) => {
         console.log(data);
         return sql`UPDATE courses 
-        SET name=${data.name}, price=${data.price}, status=${data.status === 'active' ? true : false}
+        SET name=${data.name}, price=${data.price}, status=${data.status === 'active' ? true : false}, updated_at=NOW()
         WHERE id=${id}`;
     },
     delete: (id) => {
@@ -46,7 +47,9 @@ module.exports = {
     findId: (id) => {
         // console.log(id);
         return sql`SELECT * FROM courses WHERE id=${id}`;
-    }
+    },
+
+    
     // search: (status) => {
     //     const filter = status ? 
     // }

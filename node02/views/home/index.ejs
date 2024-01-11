@@ -23,14 +23,16 @@
 </form>
 <%-msg.length ? `<div class="alert alert-success mt-2">${msg}</div>`:""%>
 <%-msgDelete.length? `<div class="alert alert-success mt-2">${msgDelete}</div>`:"" %>
+<%-msgUpdate.length? `<div class="alert alert-success mt-2">${msgUpdate}</div>`:"" %>
+
 <table class="table table-bordered" cellspacing="0" >
   <tr>
     <th style="padding: 8px;">Id</th>
     <th style="padding: 8px;">Course</th>
+    <th style="padding: 8px;">Status</th>
     <th style="padding: 8px;">Price</th>
     <th style="padding: 8px;">Created_at</th>
     <th style="padding: 8px;">Updated_at</th>
-    <th style="padding: 8px;">Status</th>
     <th>
         <a href="#" class="btn btn-warning">Fix</a>
     </th>
